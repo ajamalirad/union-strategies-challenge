@@ -1,3 +1,4 @@
+import React from 'react';
 import './App.css';
 import firebase from './firebase';
 import UserInfo from './UserInfo';
@@ -9,8 +10,9 @@ const App = () => {
   const user = {
     loggedIn: false
 }
-const [username, setUsername] = useState([]);
-const [password, setPassword] = useState([]);
+const [username, setUsername] = useState('');
+const [password, setPassword] = useState('');
+const [userInput, setUserInput] = useState('');
 
 // FIREBASE
 
@@ -19,15 +21,26 @@ const [password, setPassword] = useState([]);
         dbRef.on('value', (response) => {
           console.log(response.val());
 
-          })
+          const newState = [];
+          const data = response.val();
+          for (let key in data) {
+            newState.push({
+              key: key,
+              name: data[key],
+            })
+          }
+          setUsername(newState);
+        })
     }, [])
 
 // CLICK AND CHANGE HANDLERS
   const handleClick = (event) => {
       event.preventDefault();
       user.loggedIn = true;
-      console.log("clicked!");
-      console.log(user.loggedIn);
+
+      const dbRef = firebase.database().ref();
+      dbRef.push(password);
+      setPassword('');
   }
 
   const logOutClick = (event) => {

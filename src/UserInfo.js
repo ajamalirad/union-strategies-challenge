@@ -1,8 +1,5 @@
 import React from 'react';
-import { Loader } from "@googlemaps/js-api-loader";
-import { Wrapper } from '@googlemaps/react-wrapper';
-
-
+import Map from './Map';
 
 const UserInfo = (props) => {
 
@@ -11,24 +8,10 @@ const UserInfo = (props) => {
         console.log("clicked!");
     }
 
-    const loader = new Loader({
-        apiKey: "AIzaSyA5aBn8zVymH9BIbYohL5n47_Jkfd4guWQ",
-        version: "weekly",
-        libraries: ["places"],
-    });
-
-    loader
-        .load()
-        .then(() => {
-            console.log('hello');
-        })
-        .catch((e) => {
-        })
-
     return (
         <div className="wrapper">
 
-            <form action="submit">
+            <form>
                 <label 
                     htmlFor="firstName"
                     className="sr-only"
@@ -73,8 +56,8 @@ const UserInfo = (props) => {
             </form>
 
             <div className="mapContainer">
-                <div className="map">
-                    
+                <div className="map" id="map">
+                    <Map />
                 </div>
             </div>
 

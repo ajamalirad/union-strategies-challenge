@@ -66,6 +66,12 @@ button.logOutButton {
   background-color: lightsalmon;
 }
 
+
+#map {
+  height: 100%;
+}
+
+
 /* Media Queries */
 
 @media (max-width: 600px) {

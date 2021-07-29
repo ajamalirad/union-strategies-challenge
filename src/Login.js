@@ -5,18 +5,18 @@ const Login = (props) => {
     const [username, setUsername] = useState('your name');
 
 
-    // useEffect( () => {
-    //     const dbRef = firebase.database().ref();
-    //     dbRef.on('value', (response) => {
-    //     console.log(response.val());
-    //         const newState = [];
-    //         const data = response.val();
-    //         for (let key in data) {
-    //             newState.push(data[key]);
-    //             setUsername(newState);
-    //         }
-    //       })
-    // }, [])
+    useEffect( () => {
+        const dbRef = firebase.database().ref();
+        dbRef.on('value', (response) => {
+        console.log(response.val());
+            const newState = [];
+            const data = response.val();
+            for (let key in data) {
+                newState.push(data[key]);
+                setUsername(newState);
+            }
+          })
+    }, [])
 
     const handleClick = (event) => {
         event.preventDefault();
@@ -25,11 +25,10 @@ const Login = (props) => {
         console.log("clicked!");
         console.log(props.loggedIn);
     }
-  
 return (
 
     <div className="wrapper">
-        <form action="submit">
+        <form>
             <label 
                 htmlFor="userName"
                 className="sr-only"
