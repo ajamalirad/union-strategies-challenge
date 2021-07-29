@@ -1,11 +1,33 @@
 import React from 'react';
 import Map from './Map';
+import { useState } from 'react';
 
 const UserInfo = (props) => {
 
+    const [userAddress, setUserAddress] = useState('');
+    const [userLocationLat, setUserLocationLat] = useState([]);
+    const [userLocationLng, setUserLocationLng] = useState([]);
     const findMeClick = (event) => {
         event.preventDefault();
         console.log("clicked!");
+
+        // fetch API
+        fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${userAddress}&key=AIzaSyCAM7T-jrcMbdqhk_DyjKvXY-x6O6zsxAU`)
+        .then(function(response){
+            return response.json();
+          })
+          .then(function(jsonResult){
+            console.log(jsonResult.results[0].geometry.location);
+            setUserLocationLat(jsonResult.results[0].geometry.location.lat);
+            setUserLocationLng(jsonResult.results[0].geometry.location.lng);
+          })
+
+
+        // pass to Map
+    }
+
+    const handleChangeAddress = (event) => {
+        setUserAddress(event.target.value);
     }
 
     return (
@@ -46,6 +68,7 @@ const UserInfo = (props) => {
                     id="address"
                     type="text" 
                     placeholder="your address"
+                    onChange={handleChangeAddress} 
                 />
 
                 <button
@@ -56,8 +79,11 @@ const UserInfo = (props) => {
             </form>
 
             <div className="mapContainer">
-                <div className="map" id="map">
-                    <Map />
+                <div className="map">
+                    <Map 
+                        userLocationLat = {userLocationLat}
+                        userLocationLng = {userLocationLng}
+                     />
                 </div>
             </div>
 

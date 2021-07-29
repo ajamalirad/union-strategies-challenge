@@ -13,25 +13,30 @@ const App = () => {
 const [username, setUsername] = useState('');
 const [password, setPassword] = useState('');
 const [userInput, setUserInput] = useState('');
+const [dbInfo, setDbInfo] = useState([]);
+const array = [];
+
+
 
 // FIREBASE
 
-    useEffect( () => {
+    // useEffect( () => {
         const dbRef = firebase.database().ref();
         dbRef.on('value', (response) => {
           console.log(response.val());
 
-          const newState = [];
+
           const data = response.val();
           for (let key in data) {
-            newState.push({
+            array.push({
               key: key,
               name: data[key],
             })
           }
-          setUsername(newState);
+          const newArray = [...array]
+          setDbInfo(newArray);
         })
-    }, [])
+    // }, [])
 
 // CLICK AND CHANGE HANDLERS
   const handleClick = (event) => {
@@ -39,8 +44,9 @@ const [userInput, setUserInput] = useState('');
       user.loggedIn = true;
 
       const dbRef = firebase.database().ref();
-      dbRef.push(password);
-      setPassword('');
+      
+      // dbRef.push(password);
+      // setPassword('');
   }
 
   const logOutClick = (event) => {

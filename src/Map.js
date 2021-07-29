@@ -6,16 +6,17 @@ const AnyReactComponent = ({ text }) => <div>{text}</div>;
 const Map = (props) => {
 
     return (
-        <div style={{ height: '100vh', width: '100%' }}>
+        <div style={{ height: '450px', width: '100%' }}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: 'AIzaSyCAM7T-jrcMbdqhk_DyjKvXY-x6O6zsxAU'}}
+          bootstrapURLKeys={{ 
+              key: 'AIzaSyCAM7T-jrcMbdqhk_DyjKvXY-x6O6zsxAU'}}
           defaultCenter={props.center}
           defaultZoom={props.zoom}
         >
           <AnyReactComponent
-            lat={59.955413}
-            lng={30.337844}
-            text="My Marker"
+            lat={props.userLocationLat}
+            lng={props.userLocationLng}
+            text="🛠"
           />
         </GoogleMapReact>
       </div>
@@ -24,10 +25,10 @@ const Map = (props) => {
 
 Map.defaultProps = {
     center: {
-        lat: 59.95,
-        lng: 30.33
+        lat: 43.6532,
+        lng: -79.3832
       },
-      zoom: 11
+      zoom: 10
 }
 
 export default Map;
