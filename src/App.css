@@ -62,9 +62,11 @@ button:not(:hover) {
   background-color: rgb(179, 205, 205);
 }
 
-button.logOutButton {
+button.logOutButton,
+button.login {
   background-color: lightsalmon;
 }
+
 
 
 #map {

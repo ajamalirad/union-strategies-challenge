@@ -7,23 +7,22 @@ const UserInfo = (props) => {
     const [userAddress, setUserAddress] = useState('');
     const [userLocationLat, setUserLocationLat] = useState([]);
     const [userLocationLng, setUserLocationLng] = useState([]);
+    const [userLocation, setUserLocation] = useState([]);
+
     const findMeClick = (event) => {
         event.preventDefault();
         console.log("clicked!");
 
         // fetch API
-        fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${userAddress}&key=AIzaSyCAM7T-jrcMbdqhk_DyjKvXY-x6O6zsxAU`)
+        fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${userAddress}&key=${props.gmapsApi}`)
         .then(function(response){
             return response.json();
           })
           .then(function(jsonResult){
-            console.log(jsonResult.results[0].geometry.location);
+            setUserLocation(jsonResult.results[0].geometry.location);
             setUserLocationLat(jsonResult.results[0].geometry.location.lat);
             setUserLocationLng(jsonResult.results[0].geometry.location.lng);
           })
-
-
-        // pass to Map
     }
 
     const handleChangeAddress = (event) => {
@@ -83,6 +82,8 @@ const UserInfo = (props) => {
                     <Map 
                         userLocationLat = {userLocationLat}
                         userLocationLng = {userLocationLng}
+                        userLocation = {userLocation}
+                        gmapsApi={props.gmapsApi}
                      />
                 </div>
             </div>

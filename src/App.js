@@ -7,53 +7,53 @@ import { useEffect, useState } from 'react';
 
 
 const App = () => {
-  const user = {
-    loggedIn: false
-}
-const [username, setUsername] = useState('');
-const [password, setPassword] = useState('');
-const [userInput, setUserInput] = useState('');
-const [dbInfo, setDbInfo] = useState([]);
-const array = [];
-
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [dbInfo, setDbInfo] = useState([]);
+  const [gmapsApi, setGmapsApi] = useState('');
+  const [register, setRegister] = useState('');
+  const [logIn, setLogIn] = useState('');
 
 
 // FIREBASE
 
-    // useEffect( () => {
+    useEffect( () => {
         const dbRef = firebase.database().ref();
+
         dbRef.on('value', (response) => {
-          console.log(response.val());
+          setGmapsApi(response.val().gmaps_API);
 
-
+          const newState = [];
           const data = response.val();
           for (let key in data) {
-            array.push({
-              key: key,
-              name: data[key],
-            })
+            newState.push(data[key]);
           }
-          const newArray = [...array]
-          setDbInfo(newArray);
+          setDbInfo(newState);
         })
-    // }, [])
+    }, [])
+
 
 // CLICK AND CHANGE HANDLERS
+
   const handleClick = (event) => {
       event.preventDefault();
-      user.loggedIn = true;
-
-      const dbRef = firebase.database().ref();
-      
-      // dbRef.push(password);
-      // setPassword('');
+      setLogIn(true);
+      if (username.length > 0 && password.length > 0) {
+        const dbRef = firebase.database().ref();
+        const usersRef = dbRef.child('users');
+        usersRef.child(username).set(register);
+        setRegister({username: username, password: password});
+        setPassword('');
+        setUsername('');
+      } else {
+        alert('please log in!!')
+      }
   }
+
 
   const logOutClick = (event) => {
     event.preventDefault();
-    user.loggedIn = false;
-    console.log("clicked out!");
-    console.log(user.loggedIn);
+    setLogIn(false);
 }
 
   const handleUsernameChange = (event) => {
@@ -65,77 +65,76 @@ const array = [];
 }
 // END OF HANDLERS
 
-// MAP
-
-
   return (
-
       <div className="wrapper">
-
         <header>
             <h1>Union Strategies Inc. Tech Challenge 🛠</h1>
         </header>
 
-          <div className="userInfo">
-            <UserInfo logOutClick={logOutClick}/>
-          </div>
+        {/* Ternary to check if user is logged in to render content */}
         {
-        user.loggedIn === false
+        logIn === true
         ?
+        (
+          <div className="userInfo">
+            <UserInfo 
+              logOutClick={logOutClick}
+              gmapsApi={gmapsApi}
+            />
+          </div>
+        )
+        :
+        (
         <div className="login">
           <h2>Please login or register!</h2>
           <div className="login-form">
-          <form action="submit">
-            <label 
-                htmlFor="userName"
-                className="sr-only"
-            >
-                please enter your username
-            </label>
-            <input 
-                id="userName"
-                type="text" 
-                onChange={handleUsernameChange}
-                value={username}
-                placeholder="user name"
-            />
+            <form action="submit">
+              <label 
+                  htmlFor="userName"
+                  className="sr-only"
+              >
+                  please enter your username
+              </label>
+              <input 
+                  id="userName"
+                  type="text" 
+                  onChange={handleUsernameChange}
+                  value={username}
+                  placeholder="username"
+              />
 
-            <label 
-                htmlFor="password"
-                className="sr-only"
-            >
-                please enter your password
-            </label>
+              <label 
+                  htmlFor="password"
+                  className="sr-only"
+              >
+                  please enter your password
+              </label>
 
-            <input 
-                id="password"
-                type="password" 
-                onChange={handlePassword}
-                value={password}
-                placeholder="password"
-            />
+              <input 
+                  id="password"
+                  type="password" 
+                  onChange={handlePassword}
+                  value={password}
+                  placeholder="password"
+              />
 
-            <button 
-                onClick={handleClick}
-            >
-                    submit
-            </button>
-        </form>
+              <button className="login"
+                  onClick={handleClick}
+              >
+                      Login
+              </button>
+
+              <button 
+                  onClick={handleClick}
+              >
+                      Register
+              </button>
+              
+            </form>
           </div>
         </div>
-        : 
-        <div>
-        </div>
+        )
         }
-        {/* {
-          user.loggedIn === true
-          ?
-          <div className="userInfo">
-            <UserInfo logOutClick={logOutClick}/>
-          </div>
-          :
-          <div></div>
-        } */}
       </div>
   );
 }

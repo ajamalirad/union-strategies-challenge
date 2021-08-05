@@ -8,7 +8,6 @@ const Login = (props) => {
     useEffect( () => {
         const dbRef = firebase.database().ref();
         dbRef.on('value', (response) => {
-        console.log(response.val());
             const newState = [];
             const data = response.val();
             for (let key in data) {
