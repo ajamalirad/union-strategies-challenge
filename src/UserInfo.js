@@ -8,10 +8,12 @@ const UserInfo = (props) => {
     const [userLocationLat, setUserLocationLat] = useState([]);
     const [userLocationLng, setUserLocationLng] = useState([]);
     const [userLocation, setUserLocation] = useState([]);
+    const [findMe, setFindMe] = useState([]);
 
     const findMeClick = (event) => {
         event.preventDefault();
-        console.log("clicked!");
+        setFindMe(true);
+
 
         // fetch API
         fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${userAddress}&key=${props.gmapsApi}`)
@@ -23,6 +25,7 @@ const UserInfo = (props) => {
             setUserLocationLat(jsonResult.results[0].geometry.location.lat);
             setUserLocationLng(jsonResult.results[0].geometry.location.lng);
           })
+
     }
 
     const handleChangeAddress = (event) => {
@@ -77,16 +80,27 @@ const UserInfo = (props) => {
             </button>
             </form>
 
-            <div className="mapContainer">
-                <div className="map">
-                    <Map 
-                        userLocationLat = {userLocationLat}
-                        userLocationLng = {userLocationLng}
-                        userLocation = {userLocation}
-                        gmapsApi={props.gmapsApi}
-                     />
+            {
+                findMe === true
+                ?
+                (
+                <div className="mapContainer">
+                    <div className="map">
+                        <Map 
+                            userLocationLat = {userLocationLat}
+                            userLocationLng = {userLocationLng}
+                            userLocation = {userLocation}
+                            gmapsApi={props.gmapsApi}
+                        />
+                    </div>
                 </div>
-            </div>
+                )
+                :
+                (
+                    <div></div>
+                )
+            }
+            
 
             <button
                     className="logOutButton"

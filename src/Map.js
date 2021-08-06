@@ -4,8 +4,6 @@ import GoogleMapReact from 'google-map-react';
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 const Map = (props) => {
-  console.log(props.gmapsApi);
-
 
   const gmapsApi = props.gmapsApi;
     return (
