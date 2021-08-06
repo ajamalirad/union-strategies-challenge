@@ -5,6 +5,7 @@ const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 const Map = (props) => {
 
+
   const gmapsApi = props.gmapsApi;
     return (
         <div style={{ height: '500px', width: '100%' }}>
@@ -13,6 +14,7 @@ const Map = (props) => {
             key: `AIzaSyDFwdJTWQtUh45QaLNTeIFdUSFe2j7z7Os`}}
           defaultCenter={props.center}
           defaultZoom={props.zoom}
+          center={props.userLocation}
         >
           <AnyReactComponent
             lat={props.userLocationLat}
